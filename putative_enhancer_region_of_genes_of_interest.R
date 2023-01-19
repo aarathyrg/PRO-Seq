@@ -1,7 +1,16 @@
 #To obtain putative TREs (enhancer regions defined by dREG(Dankolab) likely belonging to selected genes
-#here- genes in cluster1-typical ISG cluster
-# Te TRE regions are already filtered for those having(DESeq2 based) upregulated transcripts and
-#in the range of 50kb from TSS of the selected genes(first 1000 genes based on padj)
+
+#each enhancers belonging to each clusters are chosen based on following criteria:
+#genes in each clusters show upregulation at specific time points, on the assumption that active enhancers produce enhancer transcrits,
+#the enhancers that potentially are involved are chosen if :
+#1)they belong to +/-50kb from TSS of genes in the respective clusters(regions chosen by intersecting with TSS+/-50kb of genes of interest( in clusters)
+#with bedtools
+
+#2) Here we are selecting enhancers which significantly produce transcripts(l2fc>=1 & padj<=0.01)in the respective timepoints 
+#where the genes in that particular cluster is upregulated
+# the enhancer regions are centered and duplicated regions are removed
+
+
 #updated 09-11-22
 #Aarathy
 
@@ -19,19 +28,25 @@ center.bed<-function(df,number){
   df[4]<-round(df[3]+2*number)
   return(df)}
 
-# selected TRE regions columns:chr, start, end,  respective log2fc,  padj (for each condition), genes
+# selected TRE regions
+#these file contains the 1)positional information of enhancers(TRE regions identified from dREG) chr, start, end,  
+#2)deseq2 derived log2fc and padj values( respective log2fc,  padj (for each sample)
+#3) gene info
 TRE_dreg_genes<-read.table("TRE_up_50kb_range_from_genes_of_interest.txt",header = T)
 #genes and respective clusters
 gene_cluster<-read.table("genes_in_cluster.txt",header = T)
 gene_cluster<-gene_cluster[,c("cluster","genes")]
 head(gene_cluster$genes[gene_cluster$cluster == 1])
 
+#merge cluster-gene info table
 TRE_dreg_genes_cluster<-merge(TRE_dreg_genes,gene_cluster[,c("genes","cluster")],by="genes")
 
 ######################################################################
-#selecting _TRES_BELONGING TO GENES IN CLUSTER1
+#selecting _TRES_BELONGING TO GENES IN CLUSTERs
 ######################################################################
 cluster<-paste(rep("cluster",11),1:11,sep = "")
+# clusters of interest
+
 
 clst<-c(1,2,3,9,10)
 
