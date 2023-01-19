@@ -1,6 +1,6 @@
 # PRO-Seq
-Comparing type I vs type II IFN transcriptome
-The early and delayed transcriptional response to type I and type II interferons are analyzed using nascent transript data.
+Comparing early and delayed transcriptional response to interferons
+The early and delayed transcriptional response to interferons are analyzed using nascent transript data.
 Steps
 1) Preprocessing and alignment was performed using proseq2.0 pipeline (https://github.com/Danko-Lab/proseq2.0)
 2) Count matrices were generated using bigWig files according to https://github.com/Danko-Lab/tfTarget/blob/master/tfTarget/R/diffTXN.R
